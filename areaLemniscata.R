@@ -83,7 +83,6 @@ calcularVectores <- function(puntos){
   #Calculamos el número de puntos
   numPuntos = calcularNumPuntos(puntos)
   vectores = array(rep(0,numPuntos*2), dim=c(numPuntos,2))
-  print(vectores)
 }
 
 #Función main que contiene todo el proceso de resolución
