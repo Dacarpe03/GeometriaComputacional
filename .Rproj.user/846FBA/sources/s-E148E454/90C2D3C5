@@ -5,13 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "479983134",
     "id" : "90C2D3C5",
-    "lastKnownWriteTime" : 1582139322,
-    "last_content_update" : 1582139322422,
+    "lastKnownWriteTime" : 1582143034,
+    "last_content_update" : 1582143034703,
     "path" : "C:/EscritorioDaniel/UNI/UNI 4º/2oCuatri/GeometriaComputacional/Practicas/GeometriaComputacional/areaLemniscataPrueba.R",
     "project_path" : "areaLemniscataPrueba.R",
     "properties" : {
+        "cursorPosition" : "9,9",
+        "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
     "read_only" : false,
