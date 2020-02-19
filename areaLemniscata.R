@@ -27,36 +27,83 @@ dibujarLemniscata <- function(ancho){
 
 #Función que dibuja un array de puntos
 dibujarPuntos <- function(puntos){
-  #Tenemos un array bidimensional de n coordenadas x y n coordenadas y por lo que tenemos una longitud 2n
-  numPuntos <- length(puntos)/2 #Como tenemos 2n coordenadas tenemos n puntos
+  #Calculamos el número de puntos que tenemos
+  numPuntos <- calcularNumPuntos(puntos)
   
-  #Los pintamos cada punto
+  #Pintamos cada punto
   for(i in 1:numPuntos){
     points(puntos[i,1], puntos[i,2], type='o', pch=18, col='green')
   }
+}#end dibujarPuntos
+
+#Función que une los puntos discretizados
+dibujarTriangulacion <- function(puntos){
+  #Calculamos el número de puntos que tenemos
+  numPuntos <- calcularNumPuntos(puntos)
+  
+  #Unimos todos los puntos con el (0,0)
+  for(i in 1:numPuntos){
+    segments(0, 0, puntos[i,1], puntos[i,2], col="#AE5CEE")
+  }
+  
+  segments(puntos[numPuntos,1], puntos[numPuntos,2], 0, 0, col="#AE5CEE")
+  
+  #Unimos cada punto con sus adyacentes
+  for(i in 1:(numPuntos-1)){
+    segments(puntos[i,1], puntos[i,2], puntos[i+1,1], puntos[i+1,2], col="#AE5CEE")
+  }
 }
+
+#Calcula el número de puntos dado array bidimensional con 2 columnas de coordenadas, una para la x y otra para la y
+calcularNumPuntos <- function(puntos){
+  #Tenemos un array bidimensional de n coordenadas x y n coordenadas y por lo que tenemos una longitud 2n
+  numPuntos <- length(puntos)/2 #Como tenemos 2n coordenadas tenemos n puntos
+}#end calcularNumPuntos
 
 #Función que calcula n puntos discretizados de la lemniscata en el primer cuadrante (t in (0, pi/2))
 calcularPuntosLemniscata <- function(n, ancho){
-    t <- seq(0, pi/2, length=n) #Parámetro t de la curva. Ahora sólo del primer cuadrante
+    t <- seq(0, pi/2, length=(n+1)) #Parámetro t de la curva. Ahora sólo del primer cuadrante
+    #Pongo n+1 porque el último elemento de esta división es el pi/2 que me dará el punto (0,0), este punto se eliminará más adelante
+    #Como ese punto se elimina y quiero n puntos en total, hago la división en n+1
     
     #Calculamos las coordenadas de los puntos de la lemniscata para dibujarlos después
     x <- ancho*(cos(t))/(1+sin(t)^2)  #Coordenadas x de la curva
     y <- x*sin(t) #Coordenadas y de la curva
-
+    
+    #Quitamos el (0,0)
+    x <- x[-c(n+1)]
+    y <- y[-c(n+1)]
+    
     #Guardamos las coordenadas de los puntos en un array y se devuelven
     puntos = array(c(x, y), dim=c(length(x),2))
 }#end calcularPuntosLemniscata
 
+#Función para calcular vectores uniendo el (0,0) con los puntos discretizados
+calcularVectores <- function(puntos){
+  numPuntos = calcularNumPuntos(puntos)
+  vectores = array(dim=c(numPuntos),2)
+  print(vectores)
+}
+
 #Función main que contiene todo el proceso de resolución
 main <- function(){
+  #Definimos un número de puntos para triangular
+  numPuntos <- 9
+  #Definimos un ancho
   ancho <- 20
-  numPuntos <- 20
-  dibujarLemniscata(ancho)
+  #Calculamos los puntos discretizados
   puntosDiscretizados <- calcularPuntosLemniscata(numPuntos, ancho)
+  #GRÁFICOS
+  #Dibujamos la lemniscata
+  dibujarLemniscata(ancho)
+  #Dibujamos los puntos
   dibujarPuntos(puntosDiscretizados)
+  #Dibujamos la triangulación
+  dibujarTriangulacion(puntosDiscretizados)
+  calcularVectores(puntosDiscretizados)
 }#end main
 
 #Lanzamos el programa
 main()
+
 
