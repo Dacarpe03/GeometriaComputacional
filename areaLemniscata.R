@@ -21,17 +21,34 @@ dibujarLemniscata <- function(ancho){
   #Dibujamos la lemniscata
   plot(x, y, type='l', col='blue')
   #Dibujamos sus focos
-  points(foco1[1], foco1[2], type='o', col='red')
-  points(foco2[1], foco2[2], type='o', col='red')
-  
+  points(foco1[1], foco1[2], type='b', pch=19, col='red')
+  points(foco2[1], foco2[2], type='b', pch=19, col='red')
 }#end dibujarLemniscata
+
+#Función que calcula n puntos discretizados de la lemniscata en el primer cuadrante (t in (0, pi/2))
+calcularPuntosLemniscata<-function(n, ancho){
+    t <- seq(0, pi/2, length=n) #Parámetro t de la curva. Ahora sólo del primer cuadrante
+    #Calculamos las coordenadas de los puntos de la lemniscata para dibujarlos después
+    x <- ancho*(cos(t))/(1+sin(t)^2)  #Coordenadas x de la curva
+    y <- x*sin(t) #Coordenadas y de la curva
+    
+    #Guardamos las coordenadas de los puntos en un array
+    puntos = array(c(x, y), dim=c(length(x),2))
+    
+    #Los pintamos
+    for(i in 1:length(x)){
+      points(puntos[i,1], puntos[i,2], type='o', pch=18, col='green')
+    }
+}#end calcularPuntosLemniscata
 
 #Función main que contiene todo el proceso de resolución
 main <- function(){
-  print("Introduzca el ancho de la hoja de la lemniscata y pulse DOS veces ENTER:")
-  ancho <- scan()
+  ancho <- 20
+  numPuntos <- 20
   dibujarLemniscata(ancho)
+  calcularPuntosLemniscata(numPuntos, ancho)
 }#end main
 
 #Lanzamos el programa
 main()
+
