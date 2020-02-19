@@ -80,9 +80,9 @@ calcularPuntosLemniscata <- function(n, ancho){
 
 #Función para calcular vectores uniendo el (0,0) con los puntos discretizados
 calcularVectores <- function(puntos){
+  #Calculamos el número de puntos
   numPuntos = calcularNumPuntos(puntos)
-  vectores = array(dim=c(numPuntos),2)
-  print(vectores)
+  vectores = array(rep(0,numPuntos*2), dim=c(numPuntos,2))
 }
 
 #Función main que contiene todo el proceso de resolución
