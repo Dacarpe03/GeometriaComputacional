@@ -88,7 +88,7 @@ calcularVectores <- function(puntos){
 #Función main que contiene todo el proceso de resolución
 main <- function(){
   #Definimos un número de puntos para triangular
-  numPuntos <- 9
+  numPuntos <- 10
   #Definimos un ancho
   ancho <- 20
   #Calculamos los puntos discretizados

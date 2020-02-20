@@ -1,12 +1,12 @@
-#Función que dibuja una lemniscata en función del ancho de su hoja
+#FunciÃ³n que dibuja una lemniscata en funciÃ³n del ancho de su hoja
 dibujarLemniscata <- function(){
   
-  #Calculamos las coordenadas de los puntos de la lemniscata para dibujarlos después
-  t <- seq(0, pi/2, length=50) #Parámetro t de la curva
+  #Calculamos las coordenadas de los puntos de la lemniscata para dibujarlos despuÃ©s
+  t <- seq(0, pi/2, length=50) #ParÃ¡metro t de la curva
   x <- (cos(t))/(1+sin(t)^2)  #Coordenadas x de la curva
   y <- x*sin(t) #Coordenadas y de la curva
   
-  #Calculamos los focos para pintarlos después
+  #Calculamos los focos para pintarlos despuÃ©s
   foco1 = c(-1/sqrt(2), 0) #Foco izquierdo
   foco2 = c(1/sqrt(2), 0) #Foco derecho
   
@@ -19,44 +19,44 @@ dibujarLemniscata <- function(){
 }#end dibujarLemniscata
 
 
-#Función que dibuja un punto
+#FunciÃ³n que dibuja un punto
 dibujarPuntoTriangulacion <- function(punto){
   points(punto[1], punto[2], type='o', pch=18, col='green')
 }#fin dibujarPuntoTriangulacion
 
-#Función que dibuja un punto
+#FunciÃ³n que dibuja un punto
 dibujarPunto <- function(punto){
   points(punto[1], punto[2], type='o', pch=4, col='green')
 }#fin dibujarPuntoTriangulacion
 
-#Función que dibuja un segmento dados dos puntos
+#FunciÃ³n que dibuja un segmento dados dos puntos
 dibujarSegmento <- function(punto1, punto2){
   segments(punto1[1], punto1[2], punto2[1], punto2[2], col="#AE5CEE")
 }#fin dibujarSegmento
 
-#Función que dibuja una linea dado un vector y un punto
+#FunciÃ³n que dibuja una linea dado un vector y un punto
 dibujarLinea <- function(punto, vector){
   x <- seq(0, 1, length=10)
   a <- punto[1] + vector[1]*x
   y <- seq(0, 1, length=10)
   b <- punto[2] + vector[2]*y
-  print(b)
   lines(a, b, type='l')
 }
 
-#Función que calcula el módulo de un vector
+#FunciÃ³n que calcula el mÃ³dulo de un vector
 modulo <- function(vector){
-  sqrt(vector[1]^2 + vector[2]^2)
+  module <- sqrt(vector[1]^2 + vector[2]^2)
+  return(module)
 }#fin dibujarLemniscata
 
 
-#Función que calcula la mediatriz de un segmento dados dos puntos
+#FunciÃ³n que calcula la mediatriz de un segmento dados dos puntos
 calcularMediatriz <- function(punto1, punto2){
   mediatriz <- (1/2)*c(punto1[1]+punto2[1], punto1[2]+punto2[2])
 }#fin calcularMediatriz
 
 
-#Función que calcula el vector de la bisectriz de un segmento dados dos puntos
+#FunciÃ³n que calcula el vector de la bisectriz de un segmento dados dos puntos
 calcularVectorDirector <- function(punto1, punto2){
   #Calculamos el vector director del segmento
   vector <- calcularVector(punto1, punto2)
@@ -66,19 +66,25 @@ calcularVectorDirector <- function(punto1, punto2){
 }#fin calcularVectorDirector
 
 
-#Función que calcula un vector dados dos puntos
+#FunciÃ³n que calcula un vector dados dos puntos
 calcularVector <- function(punto1, punto2){
   vector <- c(punto2[1]-punto1[1], punto2[2]-punto1[2])
 }
 
-#Función que calcula la desviación de un punto a la lemniscata
+#FunciÃ³n que calcula la desviaciÃ³n de un punto a la lemniscata
 calcularError <- function(punto, foco1, foco2, d){
   vectorPF1 <- calcularVector(punto, foco1)
   vectorPF2 <- calcularVector(punto, foco2)
+  
+  mod1 <- modulo(vectorPF1)
+  mod2 <- modulo(vectorPF2)
+  
+  error <- abs(d^2 - mod1*mod2)
+  error
 }#fin calcularError
 
 
-#Función que aproxima la coordY dada una x y un vector paralelo al eje Y
+#FunciÃ³n que aproxima la coordY dada una x y un vector paralelo al eje Y
 buscarCoordY <- function(punto, vector, foco1, foco2, errorAproximacion){
   
   d <- 1/sqrt(2)
@@ -88,21 +94,35 @@ buscarCoordY <- function(punto, vector, foco1, foco2, errorAproximacion){
   abajo <- 0
   arriba <- 1
   
-  coordX <- punto[0]
-    
+  coordX <- punto[1]
+  
+  foco1 <- c(-1/sqrt(2), 0)
+  foco2 <- c(1/sqrt(2), 0)
+  
   while(error > errorAproximacion){
     medio <- (abajo+arriba)/2
     
-    puntoAux <- c(coordX, medio)
-    error <- calcularError(puntoAux, foco1, foco2, d)
+    puntoArriba <- c(coordX, arriba)
+    puntoAbajo <- c(coordX, abajo)
+    errorArriba <- calcularError(puntoArriba, foco1, foco2, d)
+    errorAbajo <- calcularError(puntoAbajo, foco1, foco2, d)
     
+    if(errorArriba <= errorAbajo){
+      abajo <- medio
+      error <- errorArriba
+    }else{
+      arriba <- medio
+      error <- errorAbajo
+    }
     
+    print(error)
   }
   
+  medio
 }#fin buscarCoordY
 
 
-#Función que aproxima el punto de intersección de la lemniscata con la bisectriz de un segmento
+#FunciÃ³n que aproxima el punto de intersecciÃ³n de la lemniscata con la bisectriz de un segmento
 calcularSigPunto <- function(punto1, punto2){
   
   #Primero calculamos la recta bisectriz del segmento punto1 punto2 
@@ -114,36 +134,38 @@ calcularSigPunto <- function(punto1, punto2){
   foco1 = c(-1/sqrt(2), 0) #Foco izquierdo
   foco2 = c(1/sqrt(2), 0) #Foco derecho
   
-  #Definimos el error de aproximación que aceptamos en la búsqueda de la intersección
-  errorAproximacion = 0.0001
+  #Definimos el error de aproximaciÃ³n que aceptamos en la bÃºsqueda de la intersecciÃ³n
+  errorAproximacion = 0.00001
   
   #Hay dos casos extremos en los que la bisectriz puede ser paralela al eje x o al eje y
   if(vectorDirector[1] == 0){ # El vector es paralelo al eje y
     coordY <- buscarCoordY(mediatriz, vectorDirector, foco1, foco2, errorAproximacion)
-    sigPunto = c(mediatriz[1])
+    sigPunto <- c(mediatriz[1], coordY)
+    print(sigPunto)
+    dibujarPunto(sigPunto)
   }else if(vectorDirector[2] == 0){ #El vector es paralelo al eje x
-    
-  }else{ #El vector no es paralelo a ningún eje
-    
+    print("NO")
+  }else{ #El vector no es paralelo a ningÃºn eje
+    print("NO")
   }
 }#fin calcularSigPunto
 
 
 
 
-#Función recursiva que triagula la lemniscata con d=1/sqrt(2)
+#FunciÃ³n recursiva que triagula la lemniscata con d=1/sqrt(2)
 calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIzq, puntoDer, area){
   
   print(area)
   
-  #Primero dibujamos el segmento que une los dos puntos de este paso de recursión
+  #Primero dibujamos el segmento que une los dos puntos de este paso de recursiÃ³n
   dibujarSegmento(puntoIzq, puntoDer)
   
   print(paste0("Profundidad actual: ", profundidadActual))
   
   if(profundidadActual < profundidadMaxima){ #Comprobamos si hemos llegado a la profundidad buscada
   
-    #Calculamos el siguiente punto de triangulación
+    #Calculamos el siguiente punto de triangulaciÃ³n
     puntoTriangulacion <- calcularSigPunto(puntoIzq, puntoDer)
     #puntoTriangulacion <- calcularPuntoTriangulacion()
     mediatriz <- calcularMediatriz(puntoIzq, puntoDer)
@@ -166,10 +188,10 @@ calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIz
 }#fin calcularAreaLemniscata
 
 
-#Función main que contiene todo el proceso de resolución
+#FunciÃ³n main que contiene todo el proceso de resoluciÃ³n
 main <- function(){
-  #Definimos la "profundidad" del algoritmo de triangulación
-  profundidadMaxima = 1;
+  #Definimos la "profundidad" del algoritmo de triangulaciÃ³n
+  profundidadMaxima = 2;
   profundidadInicial = 0;
   
   #Dibujamos la lemniscata
@@ -184,12 +206,12 @@ main <- function(){
   dibujarPuntoTriangulacion(origen)
   dibujarPuntoTriangulacion(extremoDerLemniscata)
   
-  #Calculamos el área
+  #Calculamos el Ã¡rea
   print(calcularAreaLemniscata(profundidadMaxima, 0, origen, extremoDerLemniscata, 0))
 
 }#fin main
 
 
 #Lanzamos el programa
-#Función que aproxima el punto de intersección de la lemniscata con la bisectriz de un segmento
+#FunciÃ³n que aproxima el punto de intersecciÃ³n de la lemniscata con la bisectriz de un segmento
 main()
