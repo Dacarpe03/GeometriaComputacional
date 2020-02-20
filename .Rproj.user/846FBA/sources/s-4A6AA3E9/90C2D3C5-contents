@@ -75,6 +75,12 @@ calcularVector <- function(punto1, punto2){
 calcularError <- function(punto, foco1, foco2, d){
   vectorPF1 <- calcularVector(punto, foco1)
   vectorPF2 <- calcularVector(punto, foco2)
+  
+  mod1 <- modulo(vectorPF1)
+  mod2 <- modulo(vectorPF2)
+  
+  #Fórmula de la lemniscata,la multiplicación de la distancia de un punto a los focos es cte
+  error <- d^2 - mod1*mod2
 }#fin calcularError
 
 
@@ -94,8 +100,11 @@ buscarCoordY <- function(punto, vector, foco1, foco2, errorAproximacion){
     medio <- (abajo+arriba)/2
     
     puntoAux <- c(coordX, medio)
-    error <- calcularError(puntoAux, foco1, foco2, d)
+    errorIteracion <- calcularError(puntoAux, foco1, foco2, d)
     
+    if(errorIteracion < error){
+      
+    }
     
   }
   
