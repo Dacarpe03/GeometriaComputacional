@@ -40,10 +40,42 @@ modulo <- function(vector){
   sqrt(vector[1]^2 + vector[2]^2)
 }#fin dibujarLemniscata
 
+
 #Función que calcula la mediatriz de un segmento dados dos puntos
 calcularMediatriz <- function(punto1, punto2){
   mediatriz <- (1/2)*c(punto1[1]+punto2[1], punto1[2]+punto2[2])
 }#fin calcularMediatriz
+
+
+#Función que calcula el vector de la bisectriz de un segmento dados dos puntos
+calcularVectorDirector <- function(punto1, punto2){
+  #Calculamos el vector director del segmento
+  vector <- c(punto2[1]-punto1[1], punto2[2]-punto1[2])
+  
+  #Calculamos el perpendicular
+  vectorDirector <- c(-vector[2], vector[1])
+}
+
+
+#Función que aproxima el punto de intersección de la lemniscata con la bisectriz de un segmento
+calcularSigPunto <- function(punto1, punto2){
+  
+  #Primero calculamos la mediatriz del segmento
+  mediatriz <- calcularMediatriz(punto1, punto2)
+  
+  #Ahora calculamos el vector director de la bisectriz
+  vectorDirector <- calcularVectorDirector(punto1, punto2)
+  print(vectorDirector)
+  
+  x <- seq(0, 1, length=10)
+  a <- mediatriz[1] + vectorDirector[1]*x
+  y <- seq(0, 1, length=10)
+  b <- mediatriz[2] + vectorDirector[2]*y
+  print(b)
+  lines(a, b, type='l')
+  
+}#fin calcularSigPunto
+
 
 #Función recursiva que triagula la lemniscata
 calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIzq, puntoDer, area){
@@ -58,6 +90,7 @@ calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIz
   if(profundidadActual < profundidadMaxima){ #Comprobamos si hemos llegado a la profundidad buscada
   
     #Calculamos el siguiente punto de triangulación
+    puntoTriangulacion <- calcularSigPunto(puntoIzq, puntoDer)
     #puntoTriangulacion <- calcularPuntoTriangulacion()
     mediatriz <- calcularMediatriz(puntoIzq, puntoDer)
     area <- area + 1
@@ -70,6 +103,7 @@ calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIz
     area <- calcularAreaLemniscata(profundidadMaxima, sigProfundidad, mediatriz, puntoDer, area) #Parte Derecha
     
   }else{
+    
     area <- area+1
     print("Llego al fondo y subimos de profundidad")
   }
@@ -103,4 +137,5 @@ main <- function(){
 
 
 #Lanzamos el programa
+#Función que aproxima el punto de intersección de la lemniscata con la bisectriz de un segmento
 main()
