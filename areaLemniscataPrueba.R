@@ -63,27 +63,50 @@ calcularVectorDirector <- function(punto1, punto2){
   
   #Calculamos el perpendicular
   vectorDirector <- c(-vector[2], vector[1])
+}#fin calcularVectorDirector
+
+
+#Función que aproxima la coordY dada una x y un vector paralelo al eje y
+buscarCoordY <- function(mediatriz, vectorDirector, foco1, foco2, errorAproximacion){
+  d <- 1/sqrt(2)
+  error <- d
+  
+  error <- error-1
+  print(error)
+  print(d)
 }
 
 
 #Función que aproxima el punto de intersección de la lemniscata con la bisectriz de un segmento
 calcularSigPunto <- function(punto1, punto2){
   
-  #Primero calculamos la mediatriz del segmento
-  mediatriz <- calcularMediatriz(punto1, punto2)
+  #Primero calculamos la recta bisectriz del segmento punto1 punto2 
+  mediatriz <- calcularMediatriz(punto1, punto2) #Calculamos mediatriz
+  vectorDirector <- calcularVectorDirector(punto1, punto2) #Calculamos el vector director de la bisectriz
+  dibujarLinea(mediatriz, vectorDirector) #Dibujamos la bisectriz
   
-  #Ahora calculamos el vector director de la bisectriz
-  vectorDirector <- calcularVectorDirector(punto1, punto2)
+  #Ahora calculamos los focos de la lemniscata
+  foco1 = c(-1/sqrt(2), 0) #Foco izquierdo
+  foco2 = c(1/sqrt(2), 0) #Foco derecho
   
-  #Dibujamos la bisectriz
-  dibujarLinea(mediatriz, vectorDirector)
+  #Definimos el error de aproximación que aceptamos en la búsqueda de la intersección
+  errorAproximación = 0.0001
   
+  #Hay dos casos extremos en los que la bisectriz puede ser paralela al eje x o al eje y
+  if(vectorDirector[1] == 0){ # El vector es paralelo al eje y
+    coordY <- buscarCoordY(mediatriz, vectorDirector, foco1, foco2, errorAproximacion)
+    sigPunto = c(mediatriz[1])
+  }else if(vectorDirector[2] == 0){ #El vector es paralelo al eje x
+    
+  }else{ #El vector no es paralelo a ningún eje
+    
+  }
 }#fin calcularSigPunto
 
 
 
 
-#Función recursiva que triagula la lemniscata
+#Función recursiva que triagula la lemniscata con d=1/sqrt(2)
 calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIzq, puntoDer, area){
   
   print(area)
@@ -121,7 +144,7 @@ calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIz
 #Función main que contiene todo el proceso de resolución
 main <- function(){
   #Definimos la "profundidad" del algoritmo de triangulación
-  profundidadMaxima = 2;
+  profundidadMaxima = 1;
   profundidadInicial = 0;
   
   #Dibujamos la lemniscata
