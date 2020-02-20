@@ -24,27 +24,57 @@ dibujarPuntoTriangulacion <- function(punto){
   points(punto[1], punto[2], type='o', pch=18, col='green')
 }#fin dibujarPuntoTriangulacion
 
+#Función que dibuja un punto
+dibujarPunto <- function(punto){
+  points(punto[1], punto[2], type='o', pch=4, col='green')
+}#fin dibujarPuntoTriangulacion
+
+#Función que dibuja un segmento dados dos puntos
+dibujarSegmento <- function(punto1, punto2){
+  segments(punto1[1], punto1[2], punto2[1], punto2[2], col="#AE5CEE")
+}#fin dibujarSegmento
+
 
 #Función que calcula el módulo de un vector
 modulo <- function(vector){
   sqrt(vector[1]^2 + vector[2]^2)
 }#fin dibujarLemniscata
 
+#Función que calcula la mediatriz de un segmento dados dos puntos
+calcularMediatriz <- function(punto1, punto2){
+  mediatriz <- (1/2)*c(punto1[1]+punto2[1], punto1[2]+punto2[2])
+}#fin calcularMediatriz
 
 #Función recursiva que triagula la lemniscata
-calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIzq, puntoDer){
+calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIzq, puntoDer, area){
   
-  #Primero comprobamos si hemos llegado a la profundidad
-  print(profundidadActual)
-  if(profundidadActual < profundidadMaxima){
+  print(area)
+  
+  #Primero dibujamos el segmento que une los dos puntos de este paso de recursión
+  dibujarSegmento(puntoIzq, puntoDer)
+  
+  print(paste0("Profundidad actual: ", profundidadActual))
+  
+  if(profundidadActual < profundidadMaxima){ #Comprobamos si hemos llegado a la profundidad buscada
+  
+    #Calculamos el siguiente punto de triangulación
+    #puntoTriangulacion <- calcularPuntoTriangulacion()
+    mediatriz <- calcularMediatriz(puntoIzq, puntoDer)
+    area <- area + 1
+    
     #Calculamos la siguiente profundidad
     sigProfundidad = profundidadActual+1
-    calcularAreaLemniscata(profundidadMaxima, sigProfundidad, puntoIzq, puntoDer)
-    calcularAreaLemniscata(profundidadMaxima, sigProfundidad, puntoIzq, puntoDer)
+    print("A la izquierda")
+    area <- calcularAreaLemniscata(profundidadMaxima, sigProfundidad, puntoIzq, mediatriz, area) #Parte Izquierda
+    print("A la derecha")
+    area <- calcularAreaLemniscata(profundidadMaxima, sigProfundidad, mediatriz, puntoDer, area) #Parte Derecha
+    
   }else{
-    print("Llego al fondo")
+    area <- area+1
+    print("Llego al fondo y subimos de profundidad")
   }
   
+  area
 }#fin calcularAreaLemniscata
 
 
@@ -67,7 +97,7 @@ main <- function(){
   dibujarPuntoTriangulacion(extremoDerLemniscata)
   
   #Calculamos el área
-  calcularAreaLemniscata(profundidadMaxima, 0, origen, extremoDerLemniscata)
+  print(calcularAreaLemniscata(profundidadMaxima, 0, origen, extremoDerLemniscata, 0))
 
 }#fin main
 
