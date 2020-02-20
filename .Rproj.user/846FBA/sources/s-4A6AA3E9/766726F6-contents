@@ -23,7 +23,7 @@ dibujarLemniscata <- function(ancho){
   #Dibujamos sus focos
   points(foco1[1], foco1[2], type='b', pch=19, col='red')
   points(foco2[1], foco2[2], type='b', pch=19, col='red')
-}#end dibujarLemniscata
+}#fin dibujarLemniscata
 
 #Función que dibuja un array de puntos
 dibujarPuntos <- function(puntos){
@@ -34,7 +34,7 @@ dibujarPuntos <- function(puntos){
   for(i in 1:numPuntos){
     points(puntos[i,1], puntos[i,2], type='o', pch=18, col='green')
   }
-}#end dibujarPuntos
+}#fin dibujarPuntos
 
 #Función que une los puntos discretizados
 dibujarTriangulacion <- function(puntos){
@@ -52,13 +52,13 @@ dibujarTriangulacion <- function(puntos){
   for(i in 1:(numPuntos-1)){
     segments(puntos[i,1], puntos[i,2], puntos[i+1,1], puntos[i+1,2], col="#AE5CEE")
   }
-}
+}#fin dibujarTriangulacion
 
 #Calcula el número de puntos dado array bidimensional con 2 columnas de coordenadas, una para la x y otra para la y
 calcularNumPuntos <- function(puntos){
   #Tenemos un array bidimensional de n coordenadas x y n coordenadas y por lo que tenemos una longitud 2n
   numPuntos <- length(puntos)/2 #Como tenemos 2n coordenadas tenemos n puntos
-}#end calcularNumPuntos
+}#fin calcularNumPuntos
 
 #Función que calcula n puntos discretizados de la lemniscata en el primer cuadrante (t in (0, pi/2))
 calcularPuntosLemniscata <- function(n, ancho){
@@ -76,14 +76,14 @@ calcularPuntosLemniscata <- function(n, ancho){
     
     #Guardamos las coordenadas de los puntos en un array y se devuelven
     puntos = array(c(x, y), dim=c(length(x),2))
-}#end calcularPuntosLemniscata
+}#fin calcularPuntosLemniscata
 
 #Función para calcular vectores uniendo el (0,0) con los puntos discretizados
 calcularVectores <- function(puntos){
   #Calculamos el número de puntos
   numPuntos = calcularNumPuntos(puntos)
   vectores = array(rep(0,numPuntos*2), dim=c(numPuntos,2))
-}
+}#fin calcularVectores
 
 #Función main que contiene todo el proceso de resolución
 main <- function(){
@@ -101,7 +101,7 @@ main <- function(){
   #Dibujamos la triangulación
   dibujarTriangulacion(puntosDiscretizados)
   calcularVectores(puntosDiscretizados)
-}#end main
+}#fin main
 
 #Lanzamos el programa
 main()

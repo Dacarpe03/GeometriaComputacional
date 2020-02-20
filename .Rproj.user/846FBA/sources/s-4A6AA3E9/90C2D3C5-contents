@@ -7,9 +7,6 @@ dibujarLemniscata <- function(ancho){
   x <- ancho*(cos(t))/(1+sin(t)^2)  #Coordenadas x de la curva
   y <- x*sin(t) #Coordenadas y de la curva
   
-  print(t)
-  print(x)
-  print(y)
   #Calculamos los focos para pintarlos después
   foco1 = ancho*c(-1/sqrt(2), 0) #Foco izquierdo
   foco2 = ancho*c(1/sqrt(2), 0) #Foco derecho
@@ -21,8 +18,21 @@ dibujarLemniscata <- function(ancho){
   points(foco2[1], foco2[2], type='b', pch=19, col='red')
 }#end dibujarLemniscata
 
+#Función que calcula el módulo de un vector
+modulo <- function(vector){
+  sqrt(vector[1]^2 + vector[2]^2)
+}#fin dibujarLemniscata
+
 dibujarLemniscata(1)
-x <- 0.5
 points(0.5, 0.5*sin(pi/4), type='b')
-
-
+foco1 = c(-1/sqrt(2), 0) #Foco izquierdo
+foco2 = c(1/sqrt(2), 0) #Foco derecho
+p = c(1,0)
+points(p[1], p[2], type='b', pch=19, col='red')
+v1 = p-foco1
+v2 = p-foco2
+mod1 = modulo(v1)
+mod2 = modulo(v2)
+mod3 = modulo(foco1)
+print(mod3^2)
+print(mod1 * mod2)
