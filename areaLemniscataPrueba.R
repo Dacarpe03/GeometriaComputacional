@@ -34,6 +34,15 @@ dibujarSegmento <- function(punto1, punto2){
   segments(punto1[1], punto1[2], punto2[1], punto2[2], col="#AE5CEE")
 }#fin dibujarSegmento
 
+#Función que dibuja una linea dado un vector y un punto
+dibujarLinea <- function(punto, vector){
+  x <- seq(0, 1, length=10)
+  a <- punto[1] + vector[1]*x
+  y <- seq(0, 1, length=10)
+  b <- punto[2] + vector[2]*y
+  print(b)
+  lines(a, b, type='l')
+}
 
 #Función que calcula el módulo de un vector
 modulo <- function(vector){
@@ -65,16 +74,13 @@ calcularSigPunto <- function(punto1, punto2){
   
   #Ahora calculamos el vector director de la bisectriz
   vectorDirector <- calcularVectorDirector(punto1, punto2)
-  print(vectorDirector)
   
-  x <- seq(0, 1, length=10)
-  a <- mediatriz[1] + vectorDirector[1]*x
-  y <- seq(0, 1, length=10)
-  b <- mediatriz[2] + vectorDirector[2]*y
-  print(b)
-  lines(a, b, type='l')
+  #Dibujamos la bisectriz
+  dibujarLinea(mediatriz, vectorDirector)
   
 }#fin calcularSigPunto
+
+
 
 
 #Función recursiva que triagula la lemniscata
