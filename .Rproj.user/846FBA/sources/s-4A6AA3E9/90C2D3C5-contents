@@ -1,15 +1,15 @@
 
 #Función que dibuja una lemniscata en función del ancho de su hoja
-dibujarLemniscata <- function(ancho){
+dibujarLemniscata <- function(){
   t <- seq(0, pi/2, length=50) #Parámetro t de la curva
   
   #Calculamos las coordenadas de los puntos de la lemniscata para dibujarlos después
-  x <- ancho*(cos(t))/(1+sin(t)^2)  #Coordenadas x de la curva
+  x <- (cos(t))/(1+sin(t)^2)  #Coordenadas x de la curva
   y <- x*sin(t) #Coordenadas y de la curva
   
   #Calculamos los focos para pintarlos después
-  foco1 = ancho*c(-1/sqrt(2), 0) #Foco izquierdo
-  foco2 = ancho*c(1/sqrt(2), 0) #Foco derecho
+  foco1 = c(-1/sqrt(2), 0) #Foco izquierdo
+  foco2 = c(1/sqrt(2), 0) #Foco derecho
   
   #Dibujamos la lemniscata
   plot(x, y, type='l', col='blue')
@@ -23,7 +23,7 @@ modulo <- function(vector){
   sqrt(vector[1]^2 + vector[2]^2)
 }#fin dibujarLemniscata
 
-dibujarLemniscata(1)
+dibujarLemniscata()
 points(0.5, 0.5*sin(pi/4), type='b')
 foco1 = c(-1/sqrt(2), 0) #Foco izquierdo
 foco2 = c(1/sqrt(2), 0) #Foco derecho
