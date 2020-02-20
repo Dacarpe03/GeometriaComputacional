@@ -59,22 +59,47 @@ calcularMediatriz <- function(punto1, punto2){
 #Función que calcula el vector de la bisectriz de un segmento dados dos puntos
 calcularVectorDirector <- function(punto1, punto2){
   #Calculamos el vector director del segmento
-  vector <- c(punto2[1]-punto1[1], punto2[2]-punto1[2])
+  vector <- calcularVector(punto1, punto2)
   
   #Calculamos el perpendicular
   vectorDirector <- c(-vector[2], vector[1])
 }#fin calcularVectorDirector
 
 
-#Función que aproxima la coordY dada una x y un vector paralelo al eje y
-buscarCoordY <- function(mediatriz, vectorDirector, foco1, foco2, errorAproximacion){
+#Función que calcula un vector dados dos puntos
+calcularVector <- function(punto1, punto2){
+  vector <- c(punto2[1]-punto1[1], punto2[2]-punto1[2])
+}
+
+#Función que calcula la desviación de un punto a la lemniscata
+calcularError <- function(punto, foco1, foco2, d){
+  vectorPF1 <- calcularVector(punto, foco1)
+  vectorPF2 <- calcularVector(punto, foco2)
+}#fin calcularError
+
+
+#Función que aproxima la coordY dada una x y un vector paralelo al eje Y
+buscarCoordY <- function(punto, vector, foco1, foco2, errorAproximacion){
+  
   d <- 1/sqrt(2)
   error <- d
   
-  error <- error-1
-  print(error)
-  print(d)
-}
+  
+  abajo <- 0
+  arriba <- 1
+  
+  coordX <- punto[0]
+    
+  while(error > errorAproximacion){
+    medio <- (abajo+arriba)/2
+    
+    puntoAux <- c(coordX, medio)
+    error <- calcularError(puntoAux, foco1, foco2, d)
+    
+    
+  }
+  
+}#fin buscarCoordY
 
 
 #Función que aproxima el punto de intersección de la lemniscata con la bisectriz de un segmento
@@ -90,7 +115,7 @@ calcularSigPunto <- function(punto1, punto2){
   foco2 = c(1/sqrt(2), 0) #Foco derecho
   
   #Definimos el error de aproximación que aceptamos en la búsqueda de la intersección
-  errorAproximación = 0.0001
+  errorAproximacion = 0.0001
   
   #Hay dos casos extremos en los que la bisectriz puede ser paralela al eje x o al eje y
   if(vectorDirector[1] == 0){ # El vector es paralelo al eje y
