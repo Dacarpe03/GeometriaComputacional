@@ -97,20 +97,23 @@ area_triangle<-function(A, B, C){
 #Función main que contiene todo el proceso de resolución
 main <- function(){
   #Definimos un número de puntos para triangular
-  numPuntos <- 100000000
+  numPuntos <- 100
   #Definimos un ancho
   ancho <- 1
   #Calculamos los puntos discretizados
   puntosDiscretizados <- calcularPuntosLemniscata(numPuntos, ancho)
   #GRÁFICOS
   #Dibujamos la lemniscata
-  #dibujarLemniscata(ancho)
+  dibujarLemniscata(ancho)
   #Dibujamos los puntos
-  #dibujarPuntos(puntosDiscretizados)
+  dibujarPuntos(puntosDiscretizados)
   #Dibujamos la triangulación
-  #dibujarTriangulacion(puntosDiscretizados)
+  dibujarTriangulacion(puntosDiscretizados)
   area <- calcularArea(puntosDiscretizados)
   print(area)
+  mis.colores.3 <- colorRampPalette(c("#ff9999", "#99ff99", "#9999ff"))
+  hist(iris$Sepal.Width,
+       col = mis.colores.3(12))
 }#fin main
 
 #Lanzamos el programa
