@@ -54,6 +54,13 @@ dibujarTriangulacion <- function(puntos){
   }
 }#fin dibujarTriangulacion
 
+#Función que pinta el interior de un triángulo
+dibujarTriangulo <- function(A, B, C, color){
+  coordX <- c(A[1], B[1], C[1])
+  coordY <- c(A[2], B[2], C[2])
+  polygon(coordX, coordY, col=color)
+}
+
 #Calcula el número de puntos dado array bidimensional con 2 columnas de coordenadas, una para la x y otra para la y
 calcularNumPuntos <- function(puntos){
   #Tenemos un array bidimensional de n coordenadas x y n coordenadas y por lo que tenemos una longitud 2n
@@ -82,22 +89,43 @@ calcularPuntosLemniscata <- function(n, ancho){
 calcularArea <- function(puntos){
   #Calculamos el número de puntos
   numPuntos <- calcularNumPuntos(puntos)
+  #paleta <- colorRampPalette(c('red', 'yellow', 'green', 'blue'))
+  paleta <- colorRampPalette(c("#ff9999", "#99ff99", "#9999ff", "#99ff99", "#ff9999"))
+  colores <- paleta(numPuntos)
   area <- 0
   for(i in 1:(numPuntos-1)){
-    area <- area + area_triangle(c(0,0), c(puntos[i,1], puntos[i,2]), c(puntos[i+1,1],puntos[i+1,2]))
+    #Guardamos los puntos
+    origen <- c(0,0)
+    verticeUno <- c(puntos[i,1], puntos[i,2])
+    verticeDos <- c(puntos[i+1,1], puntos[i+1,2])
+  
+    #Pintamos el triángulo que vamos a calcular
+    dibujarTriangulo(origen, verticeUno, verticeDos, colores[i])
+    
+    #Sumamos el área del triángulo
+    area <- area + areaTriangulo(origen, verticeUno, verticeDos)
   }
+  
+  #Calculamos el último triángulo
+  origen <- c(0,0)
+  verticePrimero <- c(puntos[1,1], puntos[1,2])
+  verticeUltimo <- c(puntos[numPuntos,1], puntos[numPuntos,2])
+  
+  area <- area + areaTriangulo(origen, verticePrimero, verticeUltimo)
+  dibujarTriangulo(origen, verticePrimero, verticeUltimo, colores[numPuntos])
+  
   return (area)
     
 }#fin calcularVectores
 
-area_triangle<-function(A, B, C){
+areaTriangulo<-function(A, B, C){
   return(abs(det(matrix(c(A-B,A-C), nrow = 2, ncol=2)))/2)
 }
 
 #Función main que contiene todo el proceso de resolución
 main <- function(){
   #Definimos un número de puntos para triangular
-  numPuntos <- 100
+  numPuntos <- 40
   #Definimos un ancho
   ancho <- 1
   #Calculamos los puntos discretizados
@@ -111,9 +139,6 @@ main <- function(){
   dibujarTriangulacion(puntosDiscretizados)
   area <- calcularArea(puntosDiscretizados)
   print(area)
-  mis.colores.3 <- colorRampPalette(c("#ff9999", "#99ff99", "#9999ff"))
-  hist(iris$Sepal.Width,
-       col = mis.colores.3(12))
 }#fin main
 
 #Lanzamos el programa
