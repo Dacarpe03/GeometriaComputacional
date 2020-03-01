@@ -88,7 +88,7 @@ calcularError <- function(punto, foco1, foco2, d){
 buscarCoordY <- function(punto, vector, foco1, foco2, errorAproximacion){
   
   d <- 1/sqrt(2)
-  error <- d
+  error <- 1
   
   
   abajo <- 0
@@ -104,20 +104,29 @@ buscarCoordY <- function(punto, vector, foco1, foco2, errorAproximacion){
     
     puntoArriba <- c(coordX, arriba)
     puntoAbajo <- c(coordX, abajo)
+    puntoMedio <- c(coordX, medio)
+    
     errorArriba <- calcularError(puntoArriba, foco1, foco2, d)
     errorAbajo <- calcularError(puntoAbajo, foco1, foco2, d)
+    errorMedio <- calcularError(puntoMedio, foco1, foco2, d)
     
     if(errorArriba <= errorAbajo){
       abajo <- medio
-      error <- errorArriba
+      if(errorArriba <= errorMedio){
+        error <- errorArriba
+      }else{
+        error <- errorMedio
+      }
     }else{
       arriba <- medio
-      error <- errorAbajo
+      if(errorAbajo <= errorMedio){
+        error <- errorAbajo
+      }else{
+        error <- errorMedio
+      }
     }
-    
     print(error)
   }
-  
   medio
 }#fin buscarCoordY
 
@@ -141,7 +150,7 @@ calcularSigPunto <- function(punto1, punto2){
   if(vectorDirector[1] == 0){ # El vector es paralelo al eje y
     coordY <- buscarCoordY(mediatriz, vectorDirector, foco1, foco2, errorAproximacion)
     sigPunto <- c(mediatriz[1], coordY)
-    print(sigPunto)
+    print("Pinto")
     dibujarPunto(sigPunto)
   }else if(vectorDirector[2] == 0){ #El vector es paralelo al eje x
     print("NO")
@@ -191,7 +200,7 @@ calcularAreaLemniscata <- function(profundidadMaxima, profundidadActual, puntoIz
 #FunciÃ³n main que contiene todo el proceso de resoluciÃ³n
 main <- function(){
   #Definimos la "profundidad" del algoritmo de triangulaciÃ³n
-  profundidadMaxima = 2;
+  profundidadMaxima = 3;
   profundidadInicial = 0;
   
   #Dibujamos la lemniscata

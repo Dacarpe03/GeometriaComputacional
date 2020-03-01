@@ -62,7 +62,7 @@ calcularNumPuntos <- function(puntos){
 
 #Función que calcula n puntos discretizados de la lemniscata en el primer cuadrante (t in (0, pi/2))
 calcularPuntosLemniscata <- function(n, ancho){
-    t <- seq(0, pi/2, length=(n+1)) #Parámetro t de la curva. Ahora sólo del primer cuadrante
+    t <- seq(0, 2*pi, length=(n+1)) #Parámetro t de la curva. Ahora sólo del primer cuadrante
     #Pongo n+1 porque el último elemento de esta división es el pi/2 que me dará el punto (0,0), este punto se eliminará más adelante
     #Como ese punto se elimina y quiero n puntos en total, hago la división en n+1
     
@@ -79,28 +79,38 @@ calcularPuntosLemniscata <- function(n, ancho){
 }#fin calcularPuntosLemniscata
 
 #Función para calcular vectores uniendo el (0,0) con los puntos discretizados
-calcularVectores <- function(puntos){
+calcularArea <- function(puntos){
   #Calculamos el número de puntos
-  numPuntos = calcularNumPuntos(puntos)
-  vectores = array(rep(0,numPuntos*2), dim=c(numPuntos,2))
+  numPuntos <- calcularNumPuntos(puntos)
+  area <- 0
+  for(i in 1:(numPuntos-1)){
+    area <- area + area_triangle(c(0,0), c(puntos[i,1], puntos[i,2]), c(puntos[i+1,1],puntos[i+1,2]))
+  }
+  return (area)
+    
 }#fin calcularVectores
+
+area_triangle<-function(A, B, C){
+  return(abs(det(matrix(c(A-B,A-C), nrow = 2, ncol=2)))/2)
+}
 
 #Función main que contiene todo el proceso de resolución
 main <- function(){
   #Definimos un número de puntos para triangular
-  numPuntos <- 10
+  numPuntos <- 100000000
   #Definimos un ancho
-  ancho <- 20
+  ancho <- 1
   #Calculamos los puntos discretizados
   puntosDiscretizados <- calcularPuntosLemniscata(numPuntos, ancho)
   #GRÁFICOS
   #Dibujamos la lemniscata
-  dibujarLemniscata(ancho)
+  #dibujarLemniscata(ancho)
   #Dibujamos los puntos
-  dibujarPuntos(puntosDiscretizados)
+  #dibujarPuntos(puntosDiscretizados)
   #Dibujamos la triangulación
-  dibujarTriangulacion(puntosDiscretizados)
-  calcularVectores(puntosDiscretizados)
+  #dibujarTriangulacion(puntosDiscretizados)
+  area <- calcularArea(puntosDiscretizados)
+  print(area)
 }#fin main
 
 #Lanzamos el programa
