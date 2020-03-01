@@ -1,10 +1,14 @@
 #Autores: 
-        #Lucas Gómez Torres
-        #Israel Peñalver Sánchez
+        #José Luis Lavado Sánchez
         #Daniel Carmona Pedrajas
-#PRÁCTICA 1: Calcular el área de la lemniscata mediante triangulación
 
-#FUNCIONES
+#PRÁCTICA 1: Calcular el área de la lemniscata mediante triangulación
+#La idea es obtener un conjunto finito de puntos a partir de la parametrización de la lemniscata,
+#una vez calculados, crearemos triángulos uniéndolos con el origen y por último sumaremos sus áreas
+#para aproximar el área de la lemniscata
+
+
+#FUNCIONES DE DIBUJO
 
 #Función que dibuja una lemniscata en función del ancho de su hoja
 dibujarLemniscata <- function(ancho){
@@ -25,6 +29,8 @@ dibujarLemniscata <- function(ancho){
   points(foco2[1], foco2[2], type='b', pch=19, col='red')
 }#fin dibujarLemniscata
 
+
+
 #Función que dibuja un array de puntos
 dibujarPuntos <- function(puntos){
   #Calculamos el número de puntos que tenemos
@@ -35,6 +41,7 @@ dibujarPuntos <- function(puntos){
     points(puntos[i,1], puntos[i,2], type='o', pch=18, col='green')
   }
 }#fin dibujarPuntos
+
 
 #Función que une los puntos discretizados
 dibujarTriangulacion <- function(puntos){
@@ -54,18 +61,23 @@ dibujarTriangulacion <- function(puntos){
   }
 }#fin dibujarTriangulacion
 
+
 #Función que pinta el interior de un triángulo
 dibujarTriangulo <- function(A, B, C, color){
   coordX <- c(A[1], B[1], C[1])
   coordY <- c(A[2], B[2], C[2])
   polygon(coordX, coordY, col=color)
-}
+}#finDibujarTriángulo
+
+
+#FUNCIONES DE CÁLCULO
 
 #Calcula el número de puntos dado array bidimensional con 2 columnas de coordenadas, una para la x y otra para la y
 calcularNumPuntos <- function(puntos){
   #Tenemos un array bidimensional de n coordenadas x y n coordenadas y por lo que tenemos una longitud 2n
   numPuntos <- length(puntos)/2 #Como tenemos 2n coordenadas tenemos n puntos
 }#fin calcularNumPuntos
+
 
 #Función que calcula n puntos discretizados de la lemniscata en el primer cuadrante (t in (0, pi/2))
 calcularPuntosLemniscata <- function(n, ancho){
@@ -84,6 +96,7 @@ calcularPuntosLemniscata <- function(n, ancho){
     #Guardamos las coordenadas de los puntos en un array y se devuelven
     puntos = array(c(x, y), dim=c(length(x),2))
 }#fin calcularPuntosLemniscata
+
 
 #Función para calcular vectores uniendo el (0,0) con los puntos discretizados
 calcularArea <- function(puntos){
@@ -115,17 +128,19 @@ calcularArea <- function(puntos){
   dibujarTriangulo(origen, verticePrimero, verticeUltimo, colores[numPuntos])
   
   return (area)
-    
-}#fin calcularVectores
+}#fin calcularÁrea
 
+
+#Función que calcula el área de un triángulo dados sus tres vértices
 areaTriangulo<-function(A, B, C){
   return(abs(det(matrix(c(A-B,A-C), nrow = 2, ncol=2)))/2)
-}
+}#fin areaTriangulo
+
 
 #Función main que contiene todo el proceso de resolución
 main <- function(){
   #Definimos un número de puntos para triangular
-  numPuntos <- 40
+  numPuntos <- 20
   #Definimos un ancho
   ancho <- 1
   #Calculamos los puntos discretizados
@@ -138,7 +153,8 @@ main <- function(){
   #Dibujamos la triangulación
   dibujarTriangulacion(puntosDiscretizados)
   area <- calcularArea(puntosDiscretizados)
-  print(area)
+  print(paste0("El área de la lemniscata aproximada con ", numPuntos, " puntos es ", area))
+  print(paste0("El error absoluto de aproximación es de ", 1-area))
 }#fin main
 
 #Lanzamos el programa
