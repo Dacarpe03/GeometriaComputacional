@@ -127,37 +127,49 @@ dibujarGraficos <- function(tiempos){
     seleccion[i] = tiempos[i+1,5]
   }
   
-  print(longitudes)
-  print(bubbleRecursivo)
-  print(bubbleIterativo)
-  print(insercion)
-  print(seleccion)
+  plot(longitudes, bubbleRecursivo, type="o", col="blue", pch="o", lty=1, ylim=c(0,20), ylab="Tiempo(s)", xlab="Elementos del vector")
   
-  plot(longitudes, bubbleRecursivo, type='l')
-  lines(longitudes, bubbleIterativo)
-  lines(longitudes, insercion)
-  lines(longitudes, seleccion)
+  points(longitudes, bubbleIterativo, col="red", pch="*")
+  lines(longitudes, bubbleIterativo, col="red",lty=2)
+  
+  points(longitudes, insercion, col="dark red",pch="+")
+  lines(longitudes, insercion, col="dark red", lty=3)
+  
+  points(longitudes, seleccion, col="green",pch="+")
+  lines(longitudes, seleccion, col="green", lty=4)
+  
+  legend(x=0,y=20,legend=c("BubbleSort Recursivo", "BubbleSort Iterativo", "Insertion sort", "Selection sort"),
+         fill=c("blue", "red", "dark red", "green") ,cex=0.8, text.font=4, bg='grey')
 }
 
 
 main <- function(){
   #Distintas longitudes de vectores
-  longitudes <- c(10, 100,1000, 5000)
+  longitudes <- c(10, 100, 200, 400, 1000, 2500, 5000, 7500, 10000, 12000, 15000)
   tabla <- matrix(data=1:5, nrow=1)
-  print(tabla)
   for(i in 1:length(longitudes)){
+    print("-----")
     l <- longitudes[i]
     print(longitudes[i])
     arrayDesordenado <- round(runif(longitudes[i], 0, 100))
-    #br <- system.time(bubblesortRecursivo(arrayDesordenado))
+    if(l > 1000){
+      br <- c(100,100,100)
+    }else{
+      br <- system.time(bubblesortRecursivo(arrayDesordenado))
+      print("Bubblesort Recursivo")
+      print(br)
+    }
     b <- system.time(bubblesort(arrayDesordenado))
+    print("Bubblesort Iterativo")
     print(b)
     i <- system.time(insertionsort(arrayDesordenado))
+    print("Insertionsort")
+    print(i)
     s <- system.time(selectionsort(arrayDesordenado))
-    print("----------")
-    tabla <- rbind(tabla, c(l, 10, b[3], i[3], s[3]))
+    print("Selectionsort")
+    print(s)
+    tabla <- rbind(tabla, c(l, br[3], b[3], i[3], s[3]))
   }
-  print(tabla)
   
   dibujarGraficos(tabla)
 }
