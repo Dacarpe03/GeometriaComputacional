@@ -137,40 +137,53 @@ merge<-function(left, right){
   result<-c(0)
   #Mientras que haya elementos en alguna de las dos mitades
   while((length(left) > 0) && (length(right) > 0)){
+    #Si el elemento de la izquierda es mayor que el de la derecha, lo metemos al vector final
     if(left[1] <= right[1]){
       result<-c(result, left[1])
       left<-left[-1]
-    }else{
+    }else{#Si no, lo hacemos al revés
       result<-c(result, right[1])
       right<-right[-1]
     }
   }
+  
+  #Metemos el vector que queda después del bucle
   if(length(left) > 0){
     result<-c(result, left)
   }
+  
   if(length(right) > 0){
     result<-c(result, right)
   }
+  #Devolvemos el resultado
   return(result[-1])
 }
 
 ### QuickSort ###
 quicksort<-function(x, low, high){
   if(low < high){
+    #Hacemos una primera partición de la lista
     list_particion<-particion(x, low, high)
+    #Obtenemos nuestro pivote, que será el punto por el que dividiremos el vector
     p<-list_particion[['p']]
     x<-list_particion[['x']]
+    
+    #Ordenamos la parte derecha del pivote
     x<-quicksort(x, low, p-1)
+    #Ordenamos la parte izquierda del pivote
     x<-quicksort(x, p+1, high)
   }
   return(x)
 }
 
 particion<-function(x, low, high){
+  #Cogemos un pivote
   pivot <- x[high]
   i <- low
+  #Ponemos a la izquierda del pivote todos los elementos menores a él
   for(j in low:high){
     if(x[j] < pivot){
+      #Si un elemento es menor que el pivote, lo pasamos a la izquierda
       x<-swap(x, i, j)
       i<-i+1
     }
@@ -179,6 +192,7 @@ particion<-function(x, low, high){
   return(list('x'=x, 'p'=i))
 }
 
+#Intercambia de posición los elementos en las posiciones i Y j
 swap<-function(x, i, j){
   temp<-x[i]
   x[i]<-x[j]
@@ -186,7 +200,7 @@ swap<-function(x, i, j){
   return(x)
 }
 
-# Funcion que crea el heap dado un array
+# Función que crea el heap dado un array
 heapbuilding<-function(arr){
   n <- length(arr)
   
@@ -201,7 +215,7 @@ heapbuilding<-function(arr){
   return(heap)
 }
 
-# Funcion de reorganizacion del heap al eliminar o meter un elemento
+# Función de reorganización del heap al eliminar o meter un elemento
 modifyheap<-function(heap, root_i){
   n <- length(heap)
   
@@ -224,7 +238,7 @@ modifyheap<-function(heap, root_i){
     min_ind = which.min(son)
     
     # Si el menor hijo es mayor que el root los intercambiamos y seguimos en el while para que se recoloquen el resto
-    # Tambien cambiamos de root al hijo menor
+    # También cambiamos de root al hijo menor
     if(heap[root_i] > son[min_ind]){
       flag <- TRUE
       
@@ -256,7 +270,7 @@ heapsortutil<-function(heap){
     heap[1] <- heap[n]
     heap <- heap[1:(n-1)]
     
-    # Reorganizamos el heap  (siempre raiz el primer elemento)
+    # Reorganizamos el heap  (siempre raíz el primer elemento)
     heap<-modifyheap(heap, root_i = 1)
     
     n <- n - 1
