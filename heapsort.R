@@ -7,7 +7,7 @@ heapbuilding<-function(arr){
   
   # Recorremos el array
   for(j in n:1){
-    # Vamos insetando los elementos del array en el heap
+    # Vamos insertando los elementos del array en el heap
     heap<-modifyheap(heap, j)
   }
   return(heap)
