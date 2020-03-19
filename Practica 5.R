@@ -9,7 +9,7 @@ create_points<-function(){
 
 
 plot_cube<-function(points, title){
-  # library(plotly)
+  library(plotly)
   
   min_x = floor(min(points$x))
   max_x = ceiling(max(points$x))
@@ -192,6 +192,10 @@ create_figs<-function(){
               "symetric_cube" = symetric_cube,
               "homothetic_cube" = homothetic_cube))
   
+}
+
+main <- function(){
+
 }
 
 

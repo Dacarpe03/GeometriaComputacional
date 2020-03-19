@@ -312,58 +312,66 @@ dibujarGraficos <- function(tiempos){
     heapsort[i] = tiempos[i+1,8]
   }
   
-  plot(longitudes, bubbleRecursivo, type="o", col="blue", pch="o", lty=1, ylim =c(0,40), ylab="Tiempo(s)", xlab="Elementos del vector")
+  plot(longitudes, bubbleRecursivo, type="o", col="blue", pch="o", lty=1, ylim =c(0,200), ylab="Tiempo(s)", xlab="Elementos del vector")
   
-  points(longitudes, bubbleIterativo, col="red", pch="*")
-  lines(longitudes, bubbleIterativo, col="red",lty=2)
+  #points(longitudes, bubbleIterativo, col="red", pch="*")
+  #lines(longitudes, bubbleIterativo, col="red",lty=2)
   
-  points(longitudes, insercion, col="dark red",pch="+")
-  lines(longitudes, insercion, col="dark red", lty=3)
+  #points(longitudes, insercion, col="dark red",pch="+")
+  #lines(longitudes, insercion, col="dark red", lty=3)
   
-  points(longitudes, seleccion, col="green",pch="+")
-  lines(longitudes, seleccion, col="green", lty=4)
+  #points(longitudes, seleccion, col="green",pch="+")
+  #lines(longitudes, seleccion, col="green", lty=4)
   
-  points(longitudes, mergesort, col="orange",pch="+")
-  lines(longitudes, mergesort, col="orange", lty=3)
+  #points(longitudes, mergesort, col="orange",pch="+")
+  #lines(longitudes, mergesort, col="orange", lty=3)
   
-  points(longitudes, quicksort, col="black",pch="+")
-  lines(longitudes, quicksort, col="black", lty=3)
+  plot(longitudes, mergesort, type="o", col="blue", pch="+", lty=3, ylim =c(0,200), ylab="Tiempo(s)", xlab="Elementos del vector")
+
+  points(longitudes, quicksort, col="orange",pch="+")
+  lines(longitudes, quicksort, col="orange", lty=3)
   
   points(longitudes, heapsort, col="purple",pch="+")
   lines(longitudes, heapsort, col="purple", lty=3)
   
-  legend(x=0, y=40, legend=c("BubbleSort Recursivo", "BubbleSort Iterativo", "Insertion sort", "Selection sort", "Mergesort", "Quicksort", "Heapsort"),
-         fill=c("blue", "red", "dark red", "green", "orange", "black", "purple") ,cex=0.5, text.font=4, bg='grey')
+  #legend(x=0, y=40, legend=c("BubbleSort Recursivo", "BubbleSort Iterativo", "Insertion sort", "Selection sort", "Mergesort", "Quicksort", "Heapsort"),
+         #fill=c("blue", "red", "dark red", "green", "orange", "black", "purple") ,cex=0.5, text.font=4, bg='grey')
+
+  legend(x=0, y=200, legend=c("Mergesort", "Quicksort", "Heapsort"),
+         fill=c("blue", "orange", "purple") ,cex=0.5, text.font=4, bg='grey')
 }
 
 
 main <- function(){
   #Distintas longitudes de vectores
-  longitudes <- c(10, 100, 200, 400, 500, 1000, 2500, 5000, 7500, 10000, 12500)
+  longitudes <- c(1000, 2000, 5000, 7500, 10000, 12500, 15000, 20000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 65000, 75000, 100000)
   tabla <- matrix(data=1:8, nrow=1)
   for(i in 1:length(longitudes)){
     print("-----")
     l <- longitudes[i]
     print(longitudes[i])
-    arrayDesordenado <- round(runif(longitudes[i], 0, 100))
+    arrayDesordenado <- round(runif(longitudes[i], -10000, 10000))
     if(l > 1000){
       br <- c(100,100,100)
+      b <- c(100,100,100)
+      i <- c(100,100,100)
+      s <- c(100,100,100)
     }else{
       br <- system.time(bubblesortRecursivo(arrayDesordenado))
       print("Bubblesort Recursivo")
       print(br)
+      b <- system.time(bubblesort(arrayDesordenado))
+      print("Bubblesort Iterativo")
+      print(b)
+      
+      i <- system.time(insertionsort(arrayDesordenado))
+      print("Insertionsort")
+      print(i)
+      
+      s <- system.time(selectionsort(arrayDesordenado))
+      print("Selectionsort")
+      print(s)
     }
-    b <- system.time(bubblesort(arrayDesordenado))
-    print("Bubblesort Iterativo")
-    print(b)
-    
-    i <- system.time(insertionsort(arrayDesordenado))
-    print("Insertionsort")
-    print(i)
-    
-    s <- system.time(selectionsort(arrayDesordenado))
-    print("Selectionsort")
-    print(s)
     
     print("Mergesort")
     m <- system.time(mergesort(arrayDesordenado))

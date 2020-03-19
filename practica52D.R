@@ -160,6 +160,6 @@ main <- function(){
   print(plot_simetry(m, n, original_colour, transformed_colour))
   
   center = c(1,1)
-  k = 4 
+  k = 3
   print(plot_homothecy(center, k, original_colour, transformed_colour))
 }
